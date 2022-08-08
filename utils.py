@@ -1,3 +1,4 @@
+from itertools import count
 import cv2
 import numpy as np 
 
@@ -37,3 +38,25 @@ def stack_images(img_array, scale, labels = []):
                 cv2.rectangle(ver,(c*each_img_width,each_img_height*d),(c*each_img_width+len(labels[d][c])*13+27,30+each_img_height*d),(255, 255, 255),cv2.FILLED)
                 cv2.putText(ver, labels[d][c],(each_img_width*c+10,each_img_height*d+20),cv2.FONT_HERSHEY_COMPLEX,0.7,(255,0,255),2)
     return ver
+
+def rect_countour(contours):
+    
+    rect_con = []
+    
+    for i in contours:
+        area = cv2.contourArea(i)
+        if area>50:
+            peri = cv2.arcLength(i,True)
+            approx = cv2.approxPolyDP(i,0.02*peri,True)
+            if len(approx) == 4:
+                rect_con.append(i)
+                
+    rect_con = sorted(rect_con, key = cv2.contourArea,reverse=True)
+
+    return rect_con
+
+
+def get_corner_points(cont):
+    peri = cv2.arcLength(cont,True)
+    approx = cv2.approxPolyDP(cont,0.02*peri,True)
+    return approx
