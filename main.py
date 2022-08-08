@@ -35,6 +35,14 @@ if biggest_contour.size != 0 and grade_points.size != 0:
     matrix = cv2.getPerspectiveTransform(pt1, pt2)
     img_warp_colored = cv2.warpPerspective(img, matrix, (width_img, height_img))
     
+    
+    pt1_grade = np.float32(grade_points)
+    pt2_grade = np.float32([[0, 0],[325,0],[0,150],[325, 150]])
+    matrix_grade = cv2.getPerspectiveTransform(pt1_grade, pt2_grade)
+    img_grade_display = cv2.warpPerspective(img, matrix_grade, (325, 150))
+    cv2.imshow("Grade", img_grade_display)
+    
+    
 img_blank = np.zeros_like(img)
 img_array = ([img, img_gray, img_blur,img_canny],
              [img_contours,img_biggest_cons,img_warp_colored,img_blank])
