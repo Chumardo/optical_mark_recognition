@@ -10,6 +10,7 @@ height_img = 700
 img = cv2.imread(path)
 img = cv2.resize(img, (width_img, height_img))
 img_contours = img.copy()
+img_biggest_cons = img.copy()
 img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 img_blur = cv2.GaussianBlur(img_gray, (5, 5),1)
 img_canny = cv2.Canny(img_blur,10, 50)
@@ -23,9 +24,20 @@ biggest_contour = utils.get_corner_points(rect_con[0])
 grade_points = utils.get_corner_points(rect_con[1])
 
 
+if biggest_contour.size != 0 and grade_points.size != 0:
+    cv2.drawContours(img_biggest_cons,biggest_contour,-1,(0,255,0),20)
+    cv2.drawContours(img_biggest_cons, grade_points,-1, (255,0,0),20)
+    
+    biggest_contour = utils.reorder(biggest_contour)
+    grade_points = utils.reorder(grade_points)
+    pt1 = np.float32(biggest_contour)
+    pt2 = np.float32([[0, 0],[width_img,0],[0,height_img],[width_img, height_img]])
+    matrix = cv2.getPerspectiveTransform(pt1, pt2)
+    img_warp_colored = cv2.warpPerspective(img, matrix, (width_img, height_img))
+    
 img_blank = np.zeros_like(img)
 img_array = ([img, img_gray, img_blur,img_canny],
-             [img_contours,img_blank,img_blank,img_blank])
+             [img_contours,img_biggest_cons,img_warp_colored,img_blank])
 img_stacked = utils.stack_images(img_array, 0.5)
 
 

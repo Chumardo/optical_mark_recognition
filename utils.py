@@ -60,3 +60,16 @@ def get_corner_points(cont):
     peri = cv2.arcLength(cont,True)
     approx = cv2.approxPolyDP(cont,0.02*peri,True)
     return approx
+
+
+def reorder(my_points):
+    my_points = my_points.reshape((4,2))
+    my_points_new = np.zeros((4,1,2),np.int32)
+    add = my_points.sum(1)
+    my_points_new[0] = my_points[np.argmin(add)] #[0, 0]
+    my_points_new[3] = my_points[np.argmax(add)] #[w, height]
+    diff = np.diff(my_points,axis=1)
+    my_points_new[1] = my_points[np.argmin(diff)] #[width, 0]
+    my_points_new[2] = my_points[np.argmax(diff)] #[0, height]
+    
+    return my_points_new
