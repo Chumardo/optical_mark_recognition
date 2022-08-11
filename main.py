@@ -7,6 +7,7 @@ width_img = 700
 height_img = 700
 questions = 5
 choices = 5
+ans = [1,2,0,1,4]
 
 
 img = cv2.imread(path)
@@ -68,6 +69,15 @@ if biggest_contour.size != 0 and grade_points.size != 0:
         my_index_val = np.where(arr==np.amax(arr))
         my_index.append(my_index_val[0][0])
         
+    grading = []    
+    for x in range (0,questions):
+        if ans[x] == my_index[x]:
+            grading.append(1)
+        else:
+            grading.append(0)
+            
+    score = (sum(grading)/questions) * 100
+    
             
 img_blank = np.zeros_like(img)
 img_array = ([img, img_gray, img_blur,img_canny],
