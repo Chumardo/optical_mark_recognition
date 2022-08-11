@@ -5,6 +5,8 @@ import utils
 path = 'Resources/1.png'
 width_img = 700
 height_img = 700
+questions = 5
+choices = 5
 
 
 img = cv2.imread(path)
@@ -47,6 +49,19 @@ if biggest_contour.size != 0 and grade_points.size != 0:
     
     boxes = utils.split_boxes(img_thresh)    
     # cv2.imshow("test", boxes[2])
+    
+    my_pixel_val = np.zeros((questions, choices))
+    count_cols = 0
+    count_rows = 0
+    for image in boxes:
+        total_pixels = cv2.countNonZero(image)
+        my_pixel_val[count_rows][count_cols] = total_pixels
+        count_cols += 1
+        if (count_cols == choices):
+            count_rows += 1
+            count_cols = 0
+    print(my_pixel_val)
+    
     
     
 img_blank = np.zeros_like(img)
