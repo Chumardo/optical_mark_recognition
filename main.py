@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 import utils
 
-path = 'Resources/1.png'
+given_test = '1.jpg'
+path = f'Resources/{given_test}'
 width_img = 700
 height_img = 700
 questions = 5
@@ -97,8 +98,9 @@ img_blank = np.zeros_like(img)
 img_array = ([img, img_gray, img_blur,img_canny],
              [img_contours,img_biggest_cons,img_warp_colored,img_thresh],
              [img_result,img_raw_drawing,img_inv_warp,img_final])
-img_stacked = utils.stack_images(img_array, 0.3)
+# img_stacked = utils.stack_images(img_array, 0.3)
 
-cv2.imshow('Final', img_final)
-cv2.imshow('Stacked images', img_stacked)
+cv2.imwrite(f"Results/{given_test}",img_final)
+# cv2.imshow('Final', img_final)
+# cv2.imshow('Stacked images', img_stacked)
 cv2.waitKey(0)
