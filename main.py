@@ -84,7 +84,13 @@ if biggest_contour.size != 0 and grade_points.size != 0:
     img_raw_drawing = utils.show_answers(img_raw_drawing,my_index,grading,ans,questions,choices)
     inv_matrix = cv2.getPerspectiveTransform(pt2, pt1)
     img_inv_warp = cv2.warpPerspective(img_raw_drawing, inv_matrix, (width_img, height_img))
+    img_raw_grade = np.zeros_like(img_grade_display)
+    cv2.putText(img_raw_grade,str(int(score))+"%",(70, 100),cv2.FONT_HERSHEY_COMPLEX,3,(0,255,255),3)
+    inv_matrix_grade = cv2.getPerspectiveTransform(pt2_grade, pt1_grade)
+    img_inv_grade_display = cv2.warpPerspective(img_raw_grade, inv_matrix_grade, (width_img, height_img))
+    
     img_final = cv2.addWeighted(img_final,1,img_inv_warp,1,0)
+    img_final = cv2.addWeighted(img_final,1,img_inv_grade_display,1,0)
     
     
 img_blank = np.zeros_like(img)
