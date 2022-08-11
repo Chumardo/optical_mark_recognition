@@ -1,4 +1,3 @@
-from itertools import count
 import cv2
 import numpy as np 
 
@@ -84,3 +83,24 @@ def split_boxes(img):
             boxes.append(box)
             
     return boxes
+
+def show_answers(img,my_index,grading,ans,questions,choices):
+    sec_width = img.shape[1]/questions
+    sec_height = img.shape[0]/choices
+    
+    for x in range(0,questions):
+        my_answer = my_index[x]
+        #Finding Center value of given box
+        c_x = int((my_answer*sec_width)+sec_width/2)
+        c_y = int((x*sec_height)+sec_height/2)
+        if grading[x] == 1:
+            my_color = (0,255,0)
+        else:
+            my_color = (0, 0, 255)
+            correct_ans = ans[x]
+            x_for_circle = int((correct_ans*sec_width)+sec_width//2)
+            y_for_circle = int((x*sec_height)+sec_height//2)
+            cv2.circle(img,(x_for_circle,y_for_circle),30,(0,255,0),cv2.FILLED)
+        
+        cv2.circle(img,(c_x,c_y),50,my_color,cv2.FILLED)
+    return img

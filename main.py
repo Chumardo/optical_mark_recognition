@@ -77,12 +77,16 @@ if biggest_contour.size != 0 and grade_points.size != 0:
             grading.append(0)
             
     score = (sum(grading)/questions) * 100
+    img_for_grade = img_warp_colored.copy()
+    img_result = utils.show_answers(img_for_grade,my_index,grading,ans,questions,choices)
     
-            
+    
+    
 img_blank = np.zeros_like(img)
 img_array = ([img, img_gray, img_blur,img_canny],
-             [img_contours,img_biggest_cons,img_warp_colored,img_thresh])
-img_stacked = utils.stack_images(img_array, 0.5)
+             [img_contours,img_biggest_cons,img_warp_colored,img_thresh],
+             [img_result,img_blank,img_blank,img_blank])
+img_stacked = utils.stack_images(img_array, 0.3)
 
 
 cv2.imshow('Stacked images', img_stacked)
