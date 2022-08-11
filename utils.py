@@ -102,5 +102,5 @@ def show_answers(img,my_index,grading,ans,questions,choices):
             y_for_circle = int((x*sec_height)+sec_height//2)
             cv2.circle(img,(x_for_circle,y_for_circle),30,(0,255,0),cv2.FILLED)
         
-        cv2.circle(img,(c_x,c_y),50,my_color,cv2.FILLED)
+        cv2.circle(img,(c_x,c_y),45,my_color,cv2.FILLED)
     return img

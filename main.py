@@ -13,6 +13,7 @@ ans = [1,2,0,1,4]
 img = cv2.imread(path)
 img = cv2.resize(img, (width_img, height_img))
 img_contours = img.copy()
+img_final = img.copy()
 img_biggest_cons = img.copy()
 img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 img_blur = cv2.GaussianBlur(img_gray, (5, 5),1)
@@ -79,15 +80,19 @@ if biggest_contour.size != 0 and grade_points.size != 0:
     score = (sum(grading)/questions) * 100
     img_for_grade = img_warp_colored.copy()
     img_result = utils.show_answers(img_for_grade,my_index,grading,ans,questions,choices)
-    
+    img_raw_drawing = np.zeros_like(img_warp_colored)
+    img_raw_drawing = utils.show_answers(img_raw_drawing,my_index,grading,ans,questions,choices)
+    inv_matrix = cv2.getPerspectiveTransform(pt2, pt1)
+    img_inv_warp = cv2.warpPerspective(img_raw_drawing, inv_matrix, (width_img, height_img))
+    img_final = cv2.addWeighted(img_final,1,img_inv_warp,1,0)
     
     
 img_blank = np.zeros_like(img)
 img_array = ([img, img_gray, img_blur,img_canny],
              [img_contours,img_biggest_cons,img_warp_colored,img_thresh],
-             [img_result,img_blank,img_blank,img_blank])
+             [img_result,img_raw_drawing,img_inv_warp,img_final])
 img_stacked = utils.stack_images(img_array, 0.3)
 
-
+cv2.imshow('Final', img_final)
 cv2.imshow('Stacked images', img_stacked)
 cv2.waitKey(0)
