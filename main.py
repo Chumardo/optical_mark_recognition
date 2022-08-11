@@ -60,10 +60,15 @@ if biggest_contour.size != 0 and grade_points.size != 0:
         if (count_cols == choices):
             count_rows += 1
             count_cols = 0
-    print(my_pixel_val)
-    
-    
-    
+
+
+    my_index = []    
+    for x in range (0,questions):
+        arr = my_pixel_val[x]
+        my_index_val = np.where(arr==np.amax(arr))
+        my_index.append(my_index_val[0][0])
+        
+            
 img_blank = np.zeros_like(img)
 img_array = ([img, img_gray, img_blur,img_canny],
              [img_contours,img_biggest_cons,img_warp_colored,img_thresh])
