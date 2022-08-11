@@ -45,7 +45,8 @@ if biggest_contour.size != 0 and grade_points.size != 0:
     img_warp_gray = cv2.cvtColor(img_warp_colored, cv2.COLOR_BGR2GRAY)
     img_thresh = cv2.threshold(img_warp_gray,170,255,cv2.THRESH_BINARY_INV)[1]
     
-    
+    boxes = utils.split_boxes(img_thresh)    
+    # cv2.imshow("test", boxes[2])
     
     
 img_blank = np.zeros_like(img)

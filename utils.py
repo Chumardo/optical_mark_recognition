@@ -73,3 +73,14 @@ def reorder(my_points):
     my_points_new[2] = my_points[np.argmax(diff)] #[0, height]
     
     return my_points_new
+
+
+def split_boxes(img):
+    rows = np.vsplit(img,5)
+    boxes = []
+    for r in rows:
+        cols = np.hsplit(r,5)
+        for box in cols:
+            boxes.append(box)
+            
+    return boxes
