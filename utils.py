@@ -39,7 +39,7 @@ def stack_images(img_array, scale, labels = []):
                 cv2.putText(ver, labels[d][c],(each_img_width*c+10,each_img_height*d+20),cv2.FONT_HERSHEY_COMPLEX,0.7,(255,0,255),2)
     return ver
 
-def rect_countour(contours):
+def rect_contour(contours):
     
     rect_con = []
     

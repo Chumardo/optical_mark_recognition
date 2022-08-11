@@ -19,7 +19,7 @@ img_canny = cv2.Canny(img_blur,10, 50)
 contours, hierarchy = cv2.findContours(img_canny, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
 cv2.drawContours(img_contours,contours,-1,(0,255,0),10)
 
-rect_con = utils.rect_countour(contours)
+rect_con = utils.rect_contour(contours)
 biggest_contour = utils.get_corner_points(rect_con[0])
 grade_points = utils.get_corner_points(rect_con[1])
 
@@ -40,12 +40,17 @@ if biggest_contour.size != 0 and grade_points.size != 0:
     pt2_grade = np.float32([[0, 0],[325,0],[0,150],[325, 150]])
     matrix_grade = cv2.getPerspectiveTransform(pt1_grade, pt2_grade)
     img_grade_display = cv2.warpPerspective(img, matrix_grade, (325, 150))
-    cv2.imshow("Grade", img_grade_display)
+    # cv2.imshow("Grade", img_grade_display)
+    
+    img_warp_gray = cv2.cvtColor(img_warp_colored, cv2.COLOR_BGR2GRAY)
+    img_thresh = cv2.threshold(img_warp_gray,170,255,cv2.THRESH_BINARY_INV)[1]
+    
+    
     
     
 img_blank = np.zeros_like(img)
 img_array = ([img, img_gray, img_blur,img_canny],
-             [img_contours,img_biggest_cons,img_warp_colored,img_blank])
+             [img_contours,img_biggest_cons,img_warp_colored,img_thresh])
 img_stacked = utils.stack_images(img_array, 0.5)
 
 
